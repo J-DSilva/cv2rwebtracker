@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV2R Web Tracker</title>
+  <link rel="icon" type="image/webp" href="images/Holy_Water.webp">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      margin: 0;
+      padding: 0;
+    }
+    .grid {
+      display: grid;
+      gap: 8px;
+      padding: 16px;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+    .grid.five-per-row {
+      grid-template-columns: repeat(5, 50px);
+    }
+    .grid.single-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 50px;
+      grid-template-columns: repeat(auto-fit, auto);
+      column-gap: 8px;
+      max-width: 1100px;
+    }   
+    .grid img {
+      width: 50px;        
+      aspect-ratio: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: filter 0.3s;
+      display: block;
+    }
+    .grid img.darkened {
+      filter: brightness(0.4);
+    }
+    h1 {
+        color: #fff
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">CV2R Web Tracker</h1>
+  <div style="text-align:center; margin-bottom: 16px;">
+  <label for="layout-select" style="color: #fff; font-size: 1.1em;">Grid Layout: </label>
+  <select id="layout-select" style="font-size: 1em; padding: 4px 8px; border-radius: 4px;">
+    <option value="5">5 Per Row</option>
+    <option value="all">Single Row</option>
+  </select>
+  </div>
+  <div class="grid five-per-row">
+  <img src="images/White_Crystal_Icon.webp" alt="White Crystal" class="darkened">
+  <img src="images/Blue_Crystal_Icon.webp" alt="Blue Crystal" class="darkened">
+  <img src="images/Red_Crystal_Icon.webp" alt="Red Crystal" class="darkened">
+  <img src="images/Holy_Water.webp" alt="Holy Water" class="darkened">
+  <img src="images/The_Cross_Icon.webp" alt="The Cross" class="darkened">
+  <img src="images/The_Rib_Bone_Icon.webp" alt="The Rib" class="darkened">
+  <img src="images/The_Nail_Icon.webp" alt="The Nail" class="darkened">
+  <img src="images/The_Eyeball_Icon.webp" alt="The Eyeball" class="darkened">
+  <img src="images/The_Heart_of_Dracula_Icon.webp" alt="The Heart" class="darkened">
+  <img src="images/The_Ring_Icon.webp" alt="The Ring" class="darkened">
+  <img src="images/Garlic_Icon.webp" alt="Garlic" class="darkened">
+  <img src="images/Sacred_Flame_Icon.webp" alt="Sacred Flame" class="darkened">
+  <img src="images/Silk_Bag_Icon.webp" alt="Silk Bag" class="darkened">
+  <img src="images/The_Diamond_Icon.webp" alt="The Diamond" class="darkened">
+  <img src="images/The_Laurel_Icon.webp" alt="The Laurel" class="darkened">
+  <img src="images/The_Oak_Stake_Icon.webp" alt="The Oak Stake" class="darkened">
+  <img src="images/The_Dagger.png" alt="The Dagger" class="darkened">
+  <img src="images/The_Silver_Knife.png" alt="The Silver Knife" class="darkened">
+  <img src="images/The_Gold_Knife.png" alt="The Gold Knife" class="darkened">
+  </div>  
+  <div style="text-align:center; margin-top: 24px;">
+    <button id="reset-dark" style="padding: 10px 24px; font-size: 1.1em; border-radius: 6px; border: none; background: #333; color: #fff; cursor: pointer;">Reset Tracker</button>
+  </div>
+  <script>
+    document.querySelectorAll('.grid img').forEach(img => {
+      img.addEventListener('click', () => {
+        img.classList.toggle('darkened');
+      });
+    });
+
+    document.getElementById('reset-dark').addEventListener('click', () => {
+      document.querySelectorAll('.grid img').forEach(img => {
+        img.classList.add('darkened');
+      });
+    });
+  document.getElementById('layout-select').addEventListener('change', function() {
+    const grid = document.querySelector('.grid');
+    if (this.value === 'all') {
+      grid.classList.remove('five-per-row');
+      grid.classList.add('single-row');
+    } else {
+      grid.classList.remove('single-row');
+      grid.classList.add('five-per-row');
+    }
+  });
+  </script>
+</body>
+</html>
