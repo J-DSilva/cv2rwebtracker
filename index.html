@@ -82,27 +82,74 @@
     <button id="reset-dark" style="padding: 10px 24px; font-size: 1.1em; border-radius: 6px; border: none; background: #333; color: #fff; cursor: pointer;">Reset Tracker</button>
   </div>
   <script>
-    document.querySelectorAll('.grid img').forEach(img => {
+    // assign data-index so external updates can reference images by index
+    const imgs = Array.from(document.querySelectorAll('.grid img'));
+    imgs.forEach((img, i) => {
+      img.dataset.index = String(i);
       img.addEventListener('click', () => {
         img.classList.toggle('darkened');
       });
     });
 
     document.getElementById('reset-dark').addEventListener('click', () => {
-      document.querySelectorAll('.grid img').forEach(img => {
-        img.classList.add('darkened');
-      });
+      imgs.forEach(img => img.classList.add('darkened'));
     });
-  document.getElementById('layout-select').addEventListener('change', function() {
-    const grid = document.querySelector('.grid');
-    if (this.value === 'all') {
-      grid.classList.remove('five-per-row');
-      grid.classList.add('single-row');
-    } else {
-      grid.classList.remove('single-row');
-      grid.classList.add('five-per-row');
-    }
-  });
+
+    document.getElementById('layout-select').addEventListener('change', function() {
+      const grid = document.querySelector('.grid');
+      if (this.value === 'all') {
+        grid.classList.remove('five-per-row');
+        grid.classList.add('single-row');
+      } else {
+        grid.classList.remove('single-row');
+        grid.classList.add('five-per-row');
+      }
+    });
+
+    // --- WebSocket client to receive external app state updates ---
+    (function() {
+      const WS_URL = 'ws://localhost:3000';
+      let socket;
+      let reconnectTimer = null;
+
+      function applyStates(states) {
+        // states expected to be an array of booleans matching image order.
+        if (!Array.isArray(states)) return;
+        states.forEach((isDark, idx) => {
+          const img = document.querySelector(`.grid img[data-index="${idx}"]`);
+          if (!img) return;
+          if (isDark) img.classList.add('darkened'); else img.classList.remove('darkened');
+        });
+      }
+
+      function connect() {
+        socket = new WebSocket(WS_URL);
+        socket.addEventListener('open', () => {
+          console.log('WS: connected to', WS_URL);
+          if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+        });
+        socket.addEventListener('message', e => {
+          try {
+            const msg = JSON.parse(e.data);
+            if (msg && Array.isArray(msg.darkened)) {
+              applyStates(msg.darkened);
+            }
+          } catch (err) {
+            console.warn('WS: failed to parse message', e.data);
+          }
+        });
+        socket.addEventListener('close', () => {
+          console.log('WS: disconnected, will retry in 2s');
+          if (!reconnectTimer) reconnectTimer = setTimeout(connect, 2000);
+        });
+        socket.addEventListener('error', (err) => {
+          console.warn('WS: error', err.message || err);
+          socket.close();
+        });
+      }
+
+      connect();
+    })();
   </script>
 </body>
 </html>
