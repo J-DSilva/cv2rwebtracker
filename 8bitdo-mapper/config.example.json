@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "KeyA": {
+      "type": "shortcut",
+      "action": "Command+Space",
+      "description": "Example: Open Spotlight with A button"
+    },
+    "KeyB": {
+      "type": "command",
+      "action": "open -a 'Safari'",
+      "description": "Example: Open Safari with B button"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+pynput>=1.7.6
+flask>=2.3.0
+flask-cors>=4.0.0
+pyobjc-framework-Cocoa>=9.0
