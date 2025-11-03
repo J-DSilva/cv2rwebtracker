@@ -22,7 +22,7 @@ A tool to enable full functionality of the 8bitdo retro keyboard on Mac computer
 
 ## Installation
 
-1. Clone this repository:
+1. Clone this repository and navigate to the 8bitdo-mapper directory:
    ```bash
    git clone https://github.com/J-DSilva/cv2rwebtracker.git
    cd cv2rwebtracker/8bitdo-mapper
